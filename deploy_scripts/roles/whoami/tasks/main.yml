@@ -1,5 +1,10 @@
 - name: Show Current User
   block:
 
-  - name: whoami
+  - name: Running whoami command
     shell: "whoami"
+    register: prepare_whoami
+
+  - name: Printing whoami result
+    debug:
+      msg: "Whoami {{prepare_whoami.stdout}}"
