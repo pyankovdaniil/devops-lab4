@@ -1,0 +1,5 @@
+- name: Show Current User
+  block:
+
+  - name: whoami
+    shell: "whoami"
