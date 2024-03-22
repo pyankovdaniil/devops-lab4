@@ -6,3 +6,4 @@
   roles:
     - { role: ping, tags: [ 'ping' ] }
     - { role: whoami, tags: [ 'whoami' ] }
+    - { role: k8s_cluster_create, tags: [ 'k8s_cluster_create' ] }
