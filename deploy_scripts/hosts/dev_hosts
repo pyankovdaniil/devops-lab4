@@ -3,8 +3,8 @@ custom_domain_name="lab.com"
 
 # WORKERS
 [worker_nodes]
-worker1 ansible_host=192.168.0.134
-worker2 ansible_host=192.168.0.135
+worker1 ansible_host=192.168.0.134 ansible_user=client1
+worker2 ansible_host=192.168.0.135 ansible_user=client2
 
 # MASTER
 [master_nodes]
