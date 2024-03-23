@@ -39,13 +39,7 @@
     apt_key:
       url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
       state: present
-  
-  - name: Add Kubernetes APT repository
-    shell: "wget --no-check-certificate https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg"
-  
-  - name: Add Kubernetes APT repository
-    shell: "echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list"
-  
+
   - name: Install Docker
     apt:
       name: docker.io
