@@ -40,11 +40,6 @@
       url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
       state: present
 
-  - name: Install Docker
-    apt:
-      name: docker.io
-      state: present
-
   - name: Install Kubernetes dependencies
     apt:
       name: "{{item}}"
