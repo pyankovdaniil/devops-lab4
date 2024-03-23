@@ -7,3 +7,57 @@
 
   - name: Whoami of root user
     import_tasks: ../../whoami/tasks/main.yml
+
+  - name: Set timezone to Europe/Moscow
+    community.general.timezone:
+      name: Europe/Moscow
+
+  - name: Disable swap
+    command: swapoff -a
+    changed_when: true
+    when: ansible_swaptotal_mb > 0
+
+  - name: Remove swap from fstab
+    lineinfile:
+      path: '/etc/fstab'
+      regexp: '\sswap\s'
+      state: 'absent'
+
+  - name: Install dependencies
+    apt:
+      name: "{{item}}"
+      state: present
+      update_cache: yes
+    loop:
+      - apt-transport-https
+      - curl
+      - software-properties-common
+
+  - name: Add Kubernetes APT repository key
+    apt_key:
+      url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+      state: present
+  
+  - name: Add Kubernetes APT repository
+    apt_repository:
+      repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+      state: present
+  
+  - name: Install Docker
+    apt:
+      name: docker.io
+      state: present
+
+  - name: Install Kubernetes dependencies
+    apt:
+      name: "{{item}}"
+      state: present
+      update_cache: yes
+    loop:
+      - kubeadm
+      - kubelet
+      - kubectl
+
+  - name: Update apt packages
+    apt:
+      update_cache: yes

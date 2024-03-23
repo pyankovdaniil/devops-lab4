@@ -5,3 +5,7 @@ custom_domain_name="lab.com"
 [worker_nodes]
 worker1 ansible_host=192.168.0.134
 worker2 ansible_host=192.168.0.135
+
+# MASTER
+[master_nodes]
+master ansible_host=192.168.0.133
