@@ -23,6 +23,11 @@
       regexp: '\sswap\s'
       state: 'absent'
 
+  - name: Get distribution codename
+    ansible.builtin.command: lsb_release -cs
+      register: distro_codename
+      changed_when: false
+
   - name: Install dependencies
     apt:
       name: "{{item}}"
