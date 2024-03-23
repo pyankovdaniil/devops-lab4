@@ -102,7 +102,7 @@
       - kubectl
   
   - name: Init cluster using kubeadm
-    shell: "kubeadm init --pod-network-cidr=10.244.0.0/16"
+    shell: "kubeadm init --pod-network-cidr=10.244.0.0/16 --cri-socket=cri-o"
 
   - name: Update apt packages
     apt:
