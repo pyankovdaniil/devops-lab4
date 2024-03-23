@@ -37,6 +37,8 @@
       - apt-transport-https
       - ca-certificates
       - gpg
+      - python3-pip
+      - python3-setuptools
       - curl
       - software-properties-common
 
