@@ -1,6 +1,7 @@
 - hosts:
   - worker1
   - worker2
+  - master
 
   gather_facts: true
   roles:
