@@ -40,6 +40,59 @@
       url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
       state: present
 
+  - name: Ensure /usr/share/keyrings/docker is present
+    ansible.builtin.file:
+      path: /usr/share/keyrings/docker
+      state: directory
+      mode: '0755'
+
+- name: Download Docker GPG key
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/debian/gpg
+    dest: /usr/share/keyrings/docker/docker-archive-keyring.gpg
+    mode: '0644'
+
+- name: Convert Docker GPG key to binary format
+  ansible.builtin.shell:
+    cmd: gpg --dearmor < /usr/share/keyrings/docker/docker-archive-keyring.gpg > /usr/share/keyrings/docker/docker-archive-keyring.gpg.gpg
+    creates: /usr/share/keyrings/docker/docker-archive-keyring.gpg.gpg
+
+- name: Set up the Docker stable repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker/docker-archive-keyring.gpg.gpg] https://download.docker.com/linux/debian {{ distro_codename.stdout }} stable"
+    state: present
+
+- name: Install Docker CE
+  ansible.builtin.apt:
+    name: docker-ce
+    state: present
+    update_cache: yes
+
+- name: Ensure /usr/share/keyrings/kubernetes is present
+  ansible.builtin.file:
+    path: /usr/share/keyrings/kubernetes
+    state: directory
+    mode: '0755'
+
+- name: Download and add the Kubernetes repository GPG key
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+- name: Add the Kubernetes apt repository
+  ansible.builtin.lineinfile:
+    path: /etc/apt/sources.list.d/kubernetes.list
+    line: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /"
+    create: yes
+
+- name: Install Kubernetes packages
+  ansible.builtin.apt:
+    name:
+      - kubelet
+      - kubeadm
+      - kubectl
+    state: present
+    update_cache: yes
+
   - name: Install Kubernetes dependencies
     apt:
       name: "{{item}}"
