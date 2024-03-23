@@ -30,18 +30,21 @@
       update_cache: yes
     loop:
       - apt-transport-https
+      - ca-certificates
       - curl
+      - gpg
       - software-properties-common
 
   - name: Add Kubernetes APT repository key
     apt_key:
       url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
       state: present
+
+  - name: Downloading the public signing key for the Kubernetes package repositories
+    shell: "curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg"
   
-  - name: Add Kubernetes APT repository
-    apt_repository:
-      repo: 'deb https://apt.kubernetes.io/ kubernetes-xenial main'
-      state: present
+  - name: Adding the appropriate Kubernetes apt repository.
+    shell: "echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list"
   
   - name: Install Docker
     apt:
