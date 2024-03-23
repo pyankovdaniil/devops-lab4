@@ -25,8 +25,8 @@
 
   - name: Get distribution codename
     ansible.builtin.command: lsb_release -cs
-      register: distro_codename
-      changed_when: false
+    register: distro_codename
+    changed_when: false
 
   - name: Install dependencies
     apt:
