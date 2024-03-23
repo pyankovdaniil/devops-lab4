@@ -40,7 +40,7 @@
   
   - name: Add Kubernetes APT repository
     apt_repository:
-      repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+      repo: 'deb https://apt.kubernetes.io/ kubernetes-xenial main'
       state: present
   
   - name: Install Docker
